@@ -17,26 +17,30 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // validation
-    if (!formData.name || !formData.email || !formData.message) {
-      toast.error("Please fill all fields ❌");
-      return;
-    }
-    setLoading(true);
-    // console.log(formData)
+  if (!formData.name || !formData.email || !formData.message) {
+    toast.error("Please fill all fields ❌");
+    return;
+  }
 
-    // fake delay
+  setLoading(true);
+
+  try {
+    //  MongoDB
+    await axios.post(
+      "https://portfolio-backend-y3b3.onrender.com/api/contacts",
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // EmailJS
     try {
-      // await new Promise((resolve, reject) =>
-      //   setTimeout(() => {
-      //     Math.random() > 0.3 ? resolve() : reject();
-      //   }, 1500)
-      // );
-
-      // EmailJS
       await emailjs.send(
         import.meta.env.VITE_EMAIL_SERVICE_ID,
         import.meta.env.VITE_EMAIL_TEMPLATE_ID,
@@ -47,39 +51,22 @@ const Contact = () => {
         },
         import.meta.env.VITE_EMAIL_PUBLIC_KEY
       );
-
-      // MongoDB
-      const res = await axios.post(
-        "https://portfolio-backend-y3b3.onrender.com/api/contacts",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(res);
-
-      toast("Message sent successfully 😊!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      toast("Something went wrong. Try again");
-    } finally {
-      setLoading(false);
+    } catch (emailError) {
+      console.warn("Email failed but DB saved ✅", emailError);
     }
-    // alert("Message sent (backend coming soon 🚀)")
-    // setFormData({name: "", email: "", message: ""})
-  };
+
+    toast.success("Message sent successfully 😊");
+
+    setFormData({ name: "", email: "", message: "" });
+
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to send message ❌");
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
     <section className="min-h-screen bg-black text-white px-4 py-20">
       <div className="max-w-4xl mx-auto">
