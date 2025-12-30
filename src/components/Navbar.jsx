@@ -83,7 +83,7 @@ const Navbar = () => {
           {/* contact button */}
           <a
             href="/contact"
-            className="md:hidden block w-[38%] m-2.5 px-6 py-2 rounded-full text-white font-medium
+            className="md:hidden block w-[33%] m-2.5 px-4 py-3 rounded-full text-white font-medium
             bg-gradient-to-r from-purple-500 to-indigo-500
             hover:scale-105 transition"
           >
