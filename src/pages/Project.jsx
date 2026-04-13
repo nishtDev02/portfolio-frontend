@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 const projects = [
-  {
-    title: "INoteBook",
+   {
+    title: "Devhire Platform",
     description:
-      "A full-stack MERN notes application with authentication, CRUD operations and JWT security.",
-    tech: ["React", "Node.js", "Express", "MongoDB"],
-    github: "https://github.com/nishtDev02",
-    live: "",
-    image: "",
+      "A full-stack job board for developers built with MERN stack.",
+    tech: ["React", "Tailwind CSS", "Node", "JWT", "MongoDB"],
+    github: "https://github.com/nishtDev02/devhire",
+    live: "https://devhire-wheat.vercel.app/",
+    image: "/projects/devhire.png",
   },
   {
     title: "TextUtils",
